@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puzzle Generator - Sudoku Savvy</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const cells = document.querySelectorAll(".editable");
+            const keypad = document.querySelectorAll(".keypad-button");
+
+            // Get the solved board from the hidden field
+            const solvedBoard = JSON.parse(document.getElementById("solved-board").value);
+
+            // Function to validate input against the solved board
+            function validateInput(cell, value) {
+                const row = parseInt(cell.getAttribute("data-row"));
+                const col = parseInt(cell.getAttribute("data-col"));
+
+                if (value === "") {
+                    cell.classList.remove("incorrect");
+                } else if (parseInt(value) !== solvedBoard[row][col]) {
+                    cell.classList.add("incorrect");
+                } else {
+                    cell.classList.remove("incorrect");
+                }
+            }
+
+            // Event listener for the on-screen keypad
+            keypad.forEach(button => {
+                button.addEventListener("click", function () {
+                    const selectedCell = document.querySelector(".selected");
+                    if (selectedCell) {
+                        const value = button.getAttribute("data-value");
+                        if (value === "delete") {
+                            selectedCell.value = "";
+                            validateInput(selectedCell, "");
+                        } else {
+                            selectedCell.value = value;
+                            validateInput(selectedCell, value);
+                        }
+                    }
+                });
+            });
+
+            // Event listener for typing directly into the cells
+            cells.forEach(cell => {
+                cell.addEventListener("focus", function () {
+                    cells.forEach(c => c.classList.remove("selected"));
+                    cell.classList.add("selected");
+                });
+
+                cell.addEventListener("keyup", function () {
+                    validateInput(cell, cell.value);
+                });
+
+
+            });
+
+            document.addEventListener("click", function (event) {
+                // Check if the clicked element is outside the grid or keypad
+                if (!event.target.closest(".sudoku-grid") && !event.target.closest(".keypad-button")) {
+                    cells.forEach(c => c.classList.remove("selected"));
+                }
+            });
+        });
+
+
+    </script>
+</head>
+
+<body>
+    <h1>Puzzle Generator</h1>
+
+    <div class="container">
+        <div class="sudoku-grid">
+            <table>
+                {% for i in range(9) %}
+                <tr>
+                    {% for j in range(9) %}
+                    <td>
+                        <input type="text" id="cell-{{ i }}-{{ j }}" data-row="{{ i }}" data-col="{{ j }}"
+                            value="{{ board[i][j] if board[i][j] != 0 else '' }}" {% if board[i][j] !=0 %}
+                            class="filled" readonly {% else %} class="editable" {% endif %} maxlength="1">
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="keypad">
+            {% for num in range(1, 10) %}
+            <button class="keypad-button" data-value="{{ num }}">{{ num }}</button>
+            {% endfor %}
+            <button class="keypad-button" data-value="delete">Delete</button>
+        </div>
+    </div>
+
+    <!-- Hidden field containing the solved board for validation -->
+    <input type="hidden" id="solved-board" value='{{ solved_board | tojson }}' />
+
+    <div class="buttons">
+        <button type="button" onclick="window.location.href='/generator'">New Puzzle</button>
+        <button type="button" onclick="window.location.href='/'">Back to Home</button>
+
+    </div>
+</body>
+
+</html>
+

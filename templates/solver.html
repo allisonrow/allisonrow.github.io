@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku Solver</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        function showExample() {
+            const testBoard = [
+                [5, 1, 7, 6, 0, 0, 0, 3, 4],
+                [2, 8, 9, 0, 0, 4, 0, 0, 0],
+                [3, 4, 6, 2, 0, 5, 0, 9, 0],
+                [6, 0, 2, 0, 0, 0, 0, 1, 0],
+                [0, 3, 8, 0, 0, 6, 0, 4, 7],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 9, 0, 0, 0, 0, 0, 7, 8],
+                [7, 0, 3, 4, 0, 0, 5, 6, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0]
+            ];
+
+            for (let i = 0; i < 9; i++) {
+                for (let j = 0; j < 9; j++) {
+                    const cell = document.querySelector(`#cell-${i}-${j}`);
+                    if (testBoard[i][j] !== 0) {
+                        cell.value = testBoard[i][j];
+                        cell.classList.add('entered');
+                    } else {
+                        cell.value = '';
+                        cell.classList.remove('entered');
+                    }
+                }
+            }
+        }
+
+        function handleInput(event) {
+            if (event.target.value !== '') {
+                event.target.classList.add('entered');
+            } else {
+                event.target.classList.remove('entered');
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Sudoku Solver</h1>
+
+    <p id="show-example-link">
+        <a href="#" onclick="showExample(); return false;">Click here to show example</a>
+    </p>
+
+    <form method="POST">
+        <table>
+            {% for i in range(9) %}
+            <tr>
+                {% for j in range(9) %}
+                <td>
+                    <input type="text" id="cell-{{ i }}-{{ j }}" name="cell-{{ i }}-{{ j }}" maxlength="1"
+                           value="{{ board[i][j] if board[i][j] != 0 else '' }}"
+                           class="{{ 'entered' if user_inputs[i][j] else '' }}"
+                           oninput="handleInput(event)">
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+
+        <div class="buttons">
+            <button type="submit">Solve</button>
+            <button type="button" onclick="window.location.href='/solver'">Reset</button>
+            <button type="button" onclick="window.location.href='/'">Back to Home</button>
+
+        </div>
+    </form>
+</body>
+</html>

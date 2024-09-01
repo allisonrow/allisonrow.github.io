@@ -1,0 +1,254 @@
+/* ====================== Main Styling ====================== */
+body {
+    font-family: Monaco, monospace;
+    text-align: center;
+    background-color: #d3d8db;
+    padding: 20px;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+#show-example-link {
+    margin-bottom: 20px;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 20px;
+}
+
+/* ====================== GRID ====================== */
+.sudoku-grid {
+    margin-right: 20px;
+}
+
+table {
+    margin: 0 auto;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+/* Darken the borders around the 3x3 boxes */
+td {
+    border-width: 0.5px;
+}
+
+/* Darken vertical borders every 3 columns */
+td:nth-child(3) {
+    border-right-width: 3px;
+}
+td:nth-child(6) {
+    border-right-width: 3px;
+}
+td:nth-child(9) {
+    border-right-width: 3px;
+}
+
+/* Darken horizontal borders every 3 rows */
+tr:nth-child(3) td {
+    border-bottom-width: 3px;
+}
+tr:nth-child(6) td {
+    border-bottom-width: 3px;
+}
+
+/* Darken the outer border */
+table {
+    border: 3px solid #000;
+}
+
+
+/* ====================== CELLS ====================== */
+td {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    border: 1px solid #000;
+    position: relative;
+}
+
+td input {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    font-size: 20px;
+    border: none;
+    outline: none;
+    background-color: white;
+    padding: 0;
+    box-sizing: border-box; 
+}
+
+td input.entered {
+    background-color: #d3d3d3;
+}
+
+td input.incorrect {
+    background-color: red;
+}
+
+td input.filled {
+    background-color: #d3d3d3;
+    color: #000;
+}
+
+td input.editable {
+    background-color: white;
+    color: black;
+}
+
+td input.incorrect {
+    background-color: #ff9999;
+}
+
+td input.selected {
+    border: 3px solid blue;
+    box-sizing: border-box;
+}
+
+/* ====================== NOTES MODE ====================== */
+.cell-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.normal-input {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    font-size: 20px;
+    border: none;
+    outline: none;
+}
+
+.notes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    width: 100%;
+    height: 100%;
+}
+
+.note-cell {
+    font-size: 12px;
+    text-align: center;
+    line-height: 1.5;
+    color: #333;
+}
+
+
+
+/* Keypad Styling for Notes Mode */
+.keypad-button {
+    transition: font-size 0.2s;
+}
+
+
+
+
+/* ====================== KEYPAD ====================== */
+.keypad {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 120px;
+}
+
+.keypad-button {
+    width: 36px;
+    height: 36px;
+    margin: 2px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;  /* Vertically center */
+    justify-content: center;  /* Horizontally center */
+    cursor: pointer;
+    border: 2px solid #000;
+    background-color: #fff;
+    box-sizing: border-box;
+    border-radius: 5px; /* rounded corner buttons */
+}
+.keypad-button:hover {
+    background-color: #b1c7f7;
+}
+.keypad-button[data-value="delete"] {
+    width: 76px; /* Adjusted width for the delete button */
+    justify-content: center; /* Ensure the delete text is centered */
+}
+
+/* ====================== BUTTONS ====================== */
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.buttons {
+    margin-top: 20px;
+}
+
+.buttons button {
+    margin: 5px;
+}
+
+
+
+/* ====================== NORMAL/NOTES SWITCH ====================== */
+.toggleContainer {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: fit-content;
+    border: 3px solid #343434;
+    border-radius: 20px;
+    background: #343434;
+    font-weight: bold;
+    color: #343434;
+    cursor: pointer;
+  }
+  .toggleContainer::before {
+    content: '';
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    left: 0%;
+    border-radius:20px;
+    background: white;
+    transition: all 0.3s;
+  }
+  .toggleCheckbox:checked + .toggleContainer::before {
+     left: 50%;
+  }
+  .toggleContainer div {
+    padding: 6px;
+    text-align: center;
+    z-index: 1;
+  }
+  .toggleCheckbox {
+    display: none;
+  }
+  .toggleCheckbox:checked + .toggleContainer div:first-child{
+    color: white;
+    transition: color 0.3s;
+  }
+  .toggleCheckbox:checked + .toggleContainer div:last-child{
+    color: #343434;
+    transition: color 0.3s;
+  }
+  .toggleCheckbox + .toggleContainer div:first-child{
+    color: #343434;
+    transition: color 0.3s;
+  }
+  .toggleCheckbox + .toggleContainer div:last-child{
+    color: white;
+    transition: color 0.3s;
+  }
